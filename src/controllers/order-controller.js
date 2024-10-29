@@ -8,7 +8,7 @@ import {
 } from "../services/orders-services.js";
 import mongoose from "mongoose";
 import Order from "../models/Order.js";
-import { io } from "../index.js";
+
 
 export const createOrderController = async (req, res) => {
     const products = req.body.products;
@@ -51,7 +51,6 @@ export const createOrderController = async (req, res) => {
         };
 
         const order = await createOrderService(user, editeProducts);
-        io.emit('novoPedido', order);
         return res.status(201).json(order);
     } catch (error) {
         console.error(error);
@@ -78,7 +77,6 @@ export const getOrdersByUserIdController = async (req, res) => {
         if (minhasOrders.length > 0 && minhasOrders[0].user.id !== req.user.id) {
             return res.status(403).json({ error: 'Acesso negado', success: false });
         }
-        io.emit('pedidoAtualizado', minhasOrders);
         return res.status(200).json({ minhasOrders, success: true });
     } catch (error) {
         console.log(error);
@@ -145,7 +143,6 @@ export const deleteOrderController = async (req, res) => {
         await deleteOrderService(id); // Deletar o pedido
 
         const orders = await getAllOrdersService(); // Obter a lista atualizada de pedidos
-        io.emit('pedidoAtualizado', orders); // Emitir a lista atualizada
         return res.status(200).json({ message: "Pedido deletado", success: true });
     } catch (error) {
         console.log(error);
@@ -173,7 +170,6 @@ export const updateStatusOrderController = async (req, res) => {
         }
 
         const updatedOrder = await updateStatusOrderService(id, status);
-        io.emit('pedidoAtualizado', updatedOrder);
         return res.status(200).json({ updatedOrder, success: true });
     } catch (error) {
         console.log(error);
