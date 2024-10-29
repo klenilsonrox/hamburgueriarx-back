@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(uuid()) // Alterado para UUID
+  name             String
+  email            String    @unique
+  password         String
+  resetToken       String? // Token para recuperação de senha
+  resetTokenExpiry DateTime? // Expiração do token de recuperação
+  isAdmin          Boolean   @default(false) // Campo para verificar se o usuário é administrador
+  whatsapp         String?   // Campo para o número de WhatsApp
+  cep              String?
+  rua              String?
+  numero       String?
+  bairro           String?
+  cidade           String?
+  referencia       String?
+  complemento      String?
+}
+
+
+model Product {
+  id          String        @id @default(uuid()) // Alterado para UUID
+  title       String
+  description String
+  price       Float
+  imageUrl    String
+  imageName   String
+  status      ProductStatus @default(AVAILABLE) // Status padrão: disponível
+  slug        String        @unique // Slug único
+  categoryId  String? // ID da categoria (opcional)
+  category    Category?     @relation(fields: [categoryId], references: [id]) // Relacionamento com Category
+}
+
+enum ProductStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+model Category {
+  id        String    @id @default(uuid()) // Alterado para UUID
+  name      String
+  slug      String    // Slug da categoria
+  imageUrl  String?   // URL da imagem da categoria
+  imageName String?   // Nome da imagem da categoria
+  products  Product[] // Relacionamento com Product
+}
+
