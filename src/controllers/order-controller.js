@@ -102,13 +102,10 @@ export const getOrderByIdController = async (req, res) => {
             return res.status(404).json({ error: 'Nenhum pedido encontrado', success: false });
         }
 
-        if (req.user.isAdmin) {
-            return res.status(200).json({ order, success: true });
-        }
-
         if (order.user.id != req.user.id) {
             return res.status(403).json({ error: 'Acesso negado', success: false });
         }
+
 
         const orderEditada = {
             Orderid: order._id.toString(),
@@ -123,6 +120,10 @@ export const getOrderByIdController = async (req, res) => {
             status: order.status,
             products: order.products,
         };
+
+        if (req.user.isAdmin) {
+            return res.status(200).json({ orderEditada, success: true });
+        }
 
         return res.status(200).json({ order: orderEditada, success: true });
     } catch (error) {
