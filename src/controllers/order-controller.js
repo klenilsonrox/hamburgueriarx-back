@@ -70,6 +70,7 @@ export const getAllordersController = async (req, res) => {
 
 export const getOrdersByUserIdController = async (req, res) => {
     const userId = req.user.id;
+    console.log(req.user)
     try {
         const orders = await getAllOrdersService();
         const minhasOrders = orders.filter((order) => order.user.id === userId);
@@ -77,6 +78,10 @@ export const getOrdersByUserIdController = async (req, res) => {
         if (minhasOrders.length > 0 && minhasOrders[0].user.id !== req.user.id) {
             return res.status(403).json({ error: 'Acesso negado', success: false });
         }
+
+        if(req.user.isAdmin) return res.status(200).json({ orders, success: true });
+
+
         return res.status(200).json({ minhasOrders, success: true });
     } catch (error) {
         console.log(error);
