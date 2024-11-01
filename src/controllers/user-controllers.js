@@ -181,7 +181,7 @@ import { generateToken } from "../utils/generateToken.js";
             const user = await loginUserService(email, password);
             const token = await generateToken(user);
     
-            res.status(200).json({ token, success: true });
+            res.status(200).json({ token, isAdmin: user.isAdmin, success: true });
         } catch (error) {
             console.log(error.message);
     
