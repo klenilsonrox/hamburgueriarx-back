@@ -105,8 +105,6 @@ export const getOrderByIdController = async (req, res) => {
             return res.status(404).json({ error: 'Nenhum pedido encontrado', success: false });
         }
 
-        console.log(order)
-
         if (req.user.isAdmin) {
             return res.status(200).json(order);
         }
@@ -149,7 +147,7 @@ export const getOrderByIdController = async (req, res) => {
             });
         }
 
-        return res.status(200).json({ order: orderEditada, success: true });
+        return res.status(200).json({ order, success: true });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: error.message, success: false });
