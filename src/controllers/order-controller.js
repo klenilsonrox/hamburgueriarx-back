@@ -98,11 +98,19 @@ export const getOrderByIdController = async (req, res) => {
         return res.status(400).json({ error: 'ID inválido', success: false });
     }
 
+
     try {
         const order = await getOrderByIdService(id);
         if (!order) {
             return res.status(404).json({ error: 'Nenhum pedido encontrado', success: false });
         }
+
+        console.log(order)
+
+        if (req.user.isAdmin) {
+            return res.status(200).json(order);
+        }
+
 
         if (order.user.id != req.user.id) {
             return res.status(403).json({ error: 'Acesso negado', success: false });
@@ -120,11 +128,25 @@ export const getOrderByIdController = async (req, res) => {
             complemento: order.user.complemento,
             referencia: order.user.referencia,
             status: order.status,
+            tipoServico: order.tipoServico,
+            metodoPagamento: order.metodoPagamento,
             products: order.products,
         };
 
         if (req.user.isAdmin) {
-            return res.status(200).json({ orderEditada, success: true });
+            return res.status(200).json({
+                Orderid: order._id.toString(),
+                userId: order.user.id,
+                name: order.user.name,
+                whatsapp: order.user.whatsapp,
+                rua: order.user.rua,
+                numero: order.user.numero,
+                bairro: order.user.bairro,
+                complemento: order.user.complemento,
+                referencia: order.user.referencia,
+                status: order.status,
+                products: order.products,
+            });
         }
 
         return res.status(200).json({ order: orderEditada, success: true });
