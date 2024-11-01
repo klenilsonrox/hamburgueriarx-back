@@ -11,7 +11,7 @@ export const getAllOrdersService = async () => {
 }
 
 
-export const createOrderService = async (user, products) => {
+export const createOrderService = async (user, products,tipoServico,metodoPagamento) => {
 
 
     const order = new Order({
@@ -23,9 +23,12 @@ export const createOrderService = async (user, products) => {
             numero: user.numero,
             bairro: user.bairro,
             complemento: user.complemento,
-            referencia: user.referencia
+            referencia: user.referencia,
+    
         },
-        products
+        products,
+        tipoServico: tipoServico,
+        metodoPagamento:metodoPagamento 
     });
     await order.save();
     return order;

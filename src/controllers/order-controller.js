@@ -12,6 +12,7 @@ import Order from "../models/Order.js";
 
 export const createOrderController = async (req, res) => {
     const products = req.body.products;
+    const {tipoServico,metodoPagamento} = req.body
 
     try {
         const productsIds = products.map((product) => product.productId);
@@ -50,7 +51,8 @@ export const createOrderController = async (req, res) => {
             complemento: req.user.complemento,
         };
 
-        const order = await createOrderService(user, editeProducts);
+        const order = await createOrderService(user, editeProducts,tipoServico,metodoPagamento);
+    
         return res.status(201).json(order);
     } catch (error) {
         console.error(error);

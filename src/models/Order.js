@@ -64,6 +64,14 @@ const orderSchema = new Schema({
         type:String,
         default:"PENDENTE",
         required:true
+    },
+    tipoServico:{
+        type:String,
+        required:true
+    },
+    metodoPagamento:{
+        type:String,
+        required:true
     }
 },
 {timestamps:true})
