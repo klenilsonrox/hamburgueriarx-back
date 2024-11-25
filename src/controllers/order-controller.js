@@ -81,8 +81,6 @@ export const getOrdersByUserIdController = async (req, res) => {
             return res.status(403).json({ error: 'Acesso negado', success: false });
         }
 
-        if(req.user.isAdmin) return res.status(200).json({ orders, success: true });
-
 
         return res.status(200).json({ minhasOrders, success: true });
     } catch (error) {

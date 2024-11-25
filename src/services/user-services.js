@@ -175,7 +175,7 @@ export const sendPasswordResetEmailService = async (email) => {
     });
   
  
-    const resetUrl = `http://localhost:3000/auth/resetar-senha?token=${resetToken}&user=${email}`;
+    const resetUrl = `https://hamburgueriarx.vercel.app/auth/resetar-senha?token=${resetToken}&user=${email}`;
   
  
     const mailOptions = {
